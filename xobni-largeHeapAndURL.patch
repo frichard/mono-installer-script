@@ -1,0 +1,34 @@
+commit 6950f7082dc53c042da2ed1f96431e5ce20e87ea
+Author: Francois Richard <frichard@xobni.com>
+Date:   Tue Nov 20 14:08:26 2012 -0800
+
+    support for large heap and double URL decode fix
+
+diff --git a/libgc/include/private/gc_priv.h b/libgc/include/private/gc_priv.h
+index 9e19551..8b1e278 100644
+--- a/libgc/include/private/gc_priv.h
++++ b/libgc/include/private/gc_priv.h
+@@ -614,7 +614,7 @@ extern GC_warn_proc GC_current_warn_proc;
+  */
+  
+ # ifdef LARGE_CONFIG
+-#   define LOG_PHT_ENTRIES  20  /* Collisions likely at 1M blocks,	*/
++#   define LOG_PHT_ENTRIES  21  /* Collisions likely at 1M blocks,	*/
+ 				/* which is >= 4GB.  Each table takes	*/
+ 				/* 128KB, some of which may never be	*/
+ 				/* touched.				*/
+diff --git a/mcs/class/System/System.Net/HttpListenerRequest.cs b/mcs/class/System/System.Net/HttpListenerRequest.cs
+index 994c10e..87bb352 100644
+--- a/mcs/class/System/System.Net/HttpListenerRequest.cs
++++ b/mcs/class/System/System.Net/HttpListenerRequest.cs
+@@ -155,7 +155,9 @@ namespace System.Net {
+ 			if (Uri.MaybeUri (raw_url) && Uri.TryCreate (raw_url, UriKind.Absolute, out raw_uri))
+ 				path = raw_uri.PathAndQuery;
+ 			else
+-				path = HttpUtility.UrlDecode (raw_url);
++				//this is a case of double decoding
++				//path = HttpUtility.UrlDecode (raw_url);
++				path = raw_url;
+ 
+ 			if ((host == null || host.Length == 0))
+ 				host = UserHostAddress;

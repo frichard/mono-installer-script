@@ -23,7 +23,7 @@ prefix=/opt
 ECHO_PREFIX="-- "
 
 # git path for mono sources
-GIT_BASE=http://github.com/mono
+GIT_BASE=git@github.corp.xobni.com:Server
 
 while getopts ‘abd:lm:irstuv:p:hc’ opt
 do
@@ -342,7 +342,7 @@ else
             if [ $mod == "mono" ]; then
                 git checkout --track -b mono-2-8 origin/mono-2-8
                 git checkout --track -b mono-2-6 origin/mono-2-6
-                git checkout --track -b mono-2-6 origin/mono-2-10
+                git checkout --track -b mono-2-10 origin/mono-2-10
             elif [ $mod == "gtk-sharp" ]; then
                 git checkout --track origin/gtk-sharp-2-12-branch
             elif [ $mod == "gnome-desktop-sharp" ]; then
